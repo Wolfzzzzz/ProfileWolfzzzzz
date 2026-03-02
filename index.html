@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wolfzzzzz个人主页</title>
-    <!-- Font Awesome 图标库 -->
+    <title>Wolfzzzzz</title>
+    <!-- Font Awesome 6 -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        /* ========== style.css (内嵌) ========== */
         * {
             margin: 0;
             padding: 0;
@@ -17,12 +16,33 @@
 
         body {
             min-height: 100vh;
-            transition: background-color 1.2s ease;
-            background-color: #1a2b3c; /* fallback */
+            background-color: #1a2b3c;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 16px;
+            position: relative;
+            overflow-x: hidden;
+            transition: background-color 2s ease;
+        }
+        /* 动态背景层 */
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 35%),
+                radial-gradient(circle at 90% 70%, rgba(200, 230, 255, 0.2) 0%, transparent 40%),
+                radial-gradient(circle at 40% 80%, rgba(150, 200, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: bgWander 14s infinite alternate ease-in-out;
+            mix-blend-mode: overlay;
+        }
+        @keyframes bgWander {
+            0% { opacity: 0.2; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.3); }
+            100% { opacity: 0.2; transform: scale(1); }
         }
 
         /* 加载界面 */
@@ -49,25 +69,23 @@
             box-shadow: 0 30px 50px rgba(0, 0, 0, 0.7);
             text-align: center;
             color: #fff;
+            animation: loaderPulse 2.2s infinite alternate;
+        }
+        @keyframes loaderPulse {
+            0% { box-shadow: 0 30px 50px rgba(0,0,0,0.7); border-color: rgba(255,255,255,0.15); }
+            100% { box-shadow: 0 40px 90px #3f9eff; border-color: #7bc8ff; }
         }
 
         .spinner i {
             font-size: 64px;
             color: #4fc3ff;
-            animation: spin 2s infinite linear;
-            filter: drop-shadow(0 0 8px #00a6ff);
+            animation: spin 1.4s infinite linear !important;
+            filter: drop-shadow(0 0 12px #00a6ff);
         }
 
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-        }
-
-        .loader-card h2 {
-            font-weight: 400;
-            margin: 24px 0 28px;
-            letter-spacing: 1.5px;
-            color: #c2e5ff;
         }
 
         .check-list {
@@ -78,7 +96,6 @@
             border-radius: 28px;
             padding: 20px 24px;
         }
-
         .check-list li {
             margin: 18px 0;
             font-size: 1.15rem;
@@ -88,12 +105,10 @@
             align-items: center;
             gap: 12px;
         }
-
         .check-list li i {
             width: 26px;
             color: #69c4ff;
         }
-
         .check-value {
             margin-left: auto;
             font-family: 'JetBrains Mono', monospace;
@@ -103,7 +118,6 @@
             font-size: 0.95rem;
             color: #b0f0ff;
         }
-
         .progress-container {
             width: 100%;
             height: 12px;
@@ -112,7 +126,6 @@
             margin: 30px 0 20px;
             overflow: hidden;
         }
-
         .progress-fill {
             height: 100%;
             width: 0%;
@@ -121,25 +134,138 @@
             transition: width 0.4s ease;
         }
 
-        .hint {
-            opacity: 0.7;
-            font-size: 0.9rem;
-            margin-top: 20px;
-        }
-
-        /* 主内容 */
+        /* ===== 主界面 ===== */
         #main-content {
             width: 100%;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
+            position: relative;
+            z-index: 10;
+            display: none;
         }
 
-        .content-wrapper {
+        /* 导航栏 */
+        .nav-bar {
             display: flex;
-            flex-direction: column;
-            gap: 24px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
+            padding: 12px 24px;
+            background: rgba(0, 10, 25, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 80px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+            animation: navGlow 3.5s infinite alternate;
+        }
+        @keyframes navGlow {
+            0% { border-color: rgba(255,255,255,0.2); box-shadow: 0 15px 30px rgba(0,0,0,0.5); }
+            100% { border-color: #7bc8ff; box-shadow: 0 15px 50px #1e4f76; }
         }
 
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-brand i {
+            font-size: 2.2rem;
+            color: #ffbb4a;
+            filter: drop-shadow(0 0 10px #ffbb4a);
+            animation: rocketFloat 2.8s infinite alternate;
+        }
+        @keyframes rocketFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-8px) rotate(6deg); }
+        }
+        .nav-brand span {
+            font-size: 1.8rem;
+            font-weight: 600;
+            background: linear-gradient(135deg, #fff, #aad0ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            padding: 6px;
+            border-radius: 60px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .nav-tab {
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 500;
+            background: transparent;
+            color: #ccc;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+        .nav-tab::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            transition: left 0.7s;
+        }
+        .nav-tab:hover::before {
+            left: 100%;
+        }
+        .nav-tab.active {
+            background: #1e4f76;
+            color: white;
+            box-shadow: 0 0 25px #3f9eff;
+            animation: activePulse 1.4s infinite alternate;
+        }
+        @keyframes activePulse {
+            0% { box-shadow: 0 0 10px #3f9eff; }
+            100% { box-shadow: 0 0 35px #7bc8ff; }
+        }
+
+        .time-indicator {
+            background: rgba(0, 30, 50, 0.8);
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            border: 1px solid #4f8bb0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: timePulse 2.5s infinite;
+        }
+        @keyframes timePulse {
+            0% { border-color: #4f8bb0; }
+            50% { border-color: #ffbb4a; box-shadow: 0 0 15px #ffbb4a; }
+            100% { border-color: #4f8bb0; }
+        }
+
+        /* 内容面板 */
+        .tab-panel {
+            display: none;
+            animation: slideIn 0.45s ease;
+        }
+        .tab-panel.active-panel {
+            display: block;
+        }
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(25px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 玻璃卡片 */
         .glass {
             background: rgba(0, 8, 20, 0.65);
             backdrop-filter: blur(16px) saturate(180%);
@@ -149,155 +275,152 @@
             padding: 26px 32px;
             color: #f0f6fc;
             box-shadow: 0 20px 40px rgba(0,0,0,0.4);
-            transition: transform 0.2s, border-color 0.3s;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+        .glass::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.6s;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .glass:hover {
+            transform: translateY(-6px) scale(1.01);
+            border-color: rgba(140, 210, 255, 0.9);
+            box-shadow: 0 30px 70px #1e4f76;
+        }
+        .glass:hover::after {
+            opacity: 0.6;
+            animation: shimmer 2.8s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: rotate(0deg) scale(1); opacity: 0.4; }
+            50% { transform: rotate(3deg) scale(1.3); opacity: 0.6; }
+            100% { transform: rotate(0deg) scale(1); opacity: 0.4; }
         }
 
-        .time-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            padding: 18px 28px;
-        }
-
-        .time-display {
-            font-size: 1.7rem;
+        .time-display-large {
+            font-size: 1.8rem;
             font-weight: 600;
             display: flex;
             align-items: center;
             gap: 14px;
+            animation: textBreathing 2.2s infinite alternate;
+        }
+        @keyframes textBreathing {
+            0% { text-shadow: 0 0 5px rgba(100,200,255,0.4); }
+            100% { text-shadow: 0 0 25px #3f9eff; }
         }
 
-        .time-display i {
-            color: #ffd966;
-        }
-
-        #hour-badge {
-            background: rgba(255,255,255,0.15);
-            padding: 8px 22px;
-            border-radius: 60px;
-            font-size: 1.1rem;
-            border: 1px solid rgba(255,255,255,0.2);
-        }
-
-        .profile-card {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-            flex-wrap: wrap;
-        }
-
-        .avatar i {
-            font-size: 90px;
+        .avatar-small i {
+            font-size: 70px;
             background: linear-gradient(145deg, #1f4a6e, #0f2c40);
-            padding: 22px;
-            border-radius: 60% 40% 50% 50%;
+            padding: 18px;
+            border-radius: 50%;
             border: 3px solid #90d0ff;
             color: #e1f1ff;
+            animation: characterFloat 3.5s infinite alternate;
+        }
+        @keyframes characterFloat {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(-12px) rotate(5deg); }
         }
 
-        .profile-info h1 {
-            font-size: 3.2rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-            background: linear-gradient(135deg, #ffffff, #aad0ff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
+        .stat-block {
+            background: rgba(0,0,0,0.3);
+            border-radius: 28px;
+            padding: 18px;
+            text-align: center;
+            border: 1px solid #2f5575;
+            transition: all 0.3s;
+            animation: statPulse 2.8s infinite alternate;
+        }
+        .stat-block:nth-child(2) { animation-delay: 0.3s; }
+        @keyframes statPulse {
+            0% { border-color: #2f5575; }
+            100% { border-color: #ffbb4a; box-shadow: 0 0 25px #ffbb4a; }
+        }
+        .stat-block .value {
+            font-size: 2rem;
+            font-weight: 700;
+            background: #0f3752;
+            padding: 6px 0;
+            border-radius: 60px;
+            margin-top: 10px;
+            transition: all 0.2s;
+            display: inline-block;
+            width: 100%;
         }
 
-        .tagline {
-            font-size: 1.25rem;
-            margin: 12px 0 22px;
-            opacity: 0.9;
-        }
-
-        .contact-links {
+        /* 最爱机场徽章 */
+        .favorite-airports {
             display: flex;
-            gap: 22px;
+            gap: 20px;
+            margin: 15px 0;
             flex-wrap: wrap;
         }
-
-        .contact-links a {
-            text-decoration: none;
-            color: white;
-            background: rgba(255,255,255,0.08);
-            padding: 12px 26px;
-            border-radius: 60px;
-            border: 1px solid rgba(255,255,255,0.2);
-            transition: all 0.2s;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .airport-badge {
+            background: #1a405b;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-size: 1.3rem;
+            border: 1px solid #7bc8ff;
+            box-shadow: 0 0 15px #3f9eff;
+            animation: airportGlow 1.8s infinite alternate;
+        }
+        @keyframes airportGlow {
+            0% { border-color: #7bc8ff; box-shadow: 0 0 10px #3f9eff; }
+            100% { border-color: #ffbb4a; box-shadow: 0 0 30px #ffbb4a; }
         }
 
-        .contact-links a:hover {
-            background: #1e4f76;
-            border-color: #7bc8ff;
-            transform: scale(1.02);
-        }
-
-        .flight-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .flight-card .card-header {
+        .flight-details-list li {
+            margin: 18px 0;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
             gap: 16px;
-            margin-bottom: 22px;
             border-bottom: 1px dashed rgba(255,255,255,0.2);
-            padding-bottom: 15px;
+            padding-bottom: 10px;
+            transition: all 0.25s;
+        }
+        .flight-details-list li:hover {
+            transform: translateX(12px);
+            color: #ffd966;
         }
 
-        .card-header i {
-            font-size: 36px;
-            color: #ffbb4a;
+        .gear-item {
+            background: rgba(0, 30, 50, 0.7);
+            border-radius: 28px;
+            padding: 24px 16px;
+            text-align: center;
+            border: 1px solid #3d6889;
+            transition: all 0.3s;
+            animation: gearBreath 2.6s infinite alternate;
         }
-
-        .flight-details {
-            list-style: none;
+        .gear-item:nth-child(2) { animation-delay: 0.2s; }
+        .gear-item:nth-child(3) { animation-delay: 0.4s; }
+        .gear-item:nth-child(4) { animation-delay: 0.6s; }
+        @keyframes gearBreath {
+            0% { border-color: #3d6889; transform: scale(1); }
+            100% { border-color: #ffbb4a; transform: scale(1.03); box-shadow: 0 0 30px #ffbb4a; }
         }
-
-        .flight-details li {
-            margin: 16px 0;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+        .gear-item i {
+            font-size: 3rem;
+            color: #94d0ff;
+            animation: iconSpin 5s infinite linear;
         }
-
-        .flight-details i {
-            color: #5cb85c;
-        }
-
-        .flight-stats p {
-            margin: 16px 0;
-            font-size: 1.15rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .stat-badge {
-            background: #0f3752;
-            padding: 6px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #b6e6ff;
-        }
-
-        .cockpit-quote {
-            margin-top: 32px;
-            font-style: italic;
-            background: rgba(0, 20, 40, 0.7);
-            padding: 16px 20px;
-            border-radius: 40px;
-            border-left: 6px solid #3f9eff;
+        @keyframes iconSpin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
         .instruments {
@@ -307,61 +430,57 @@
             gap: 16px;
             padding: 22px 20px;
         }
-
         .instrument-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             min-width: 90px;
-            background: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.4);
             border-radius: 48px;
             padding: 12px 18px;
             border: 1px solid #3d6889;
+            animation: instrumentBreathing 1.8s infinite alternate;
         }
-
-        .instrument-item i {
-            font-size: 34px;
-            color: #94d0ff;
-            margin-bottom: 8px;
+        .instrument-item:nth-child(2) { animation-delay: 0.2s; }
+        .instrument-item:nth-child(3) { animation-delay: 0.4s; }
+        .instrument-item:nth-child(4) { animation-delay: 0.6s; }
+        @keyframes instrumentBreathing {
+            0% { border-color: #3d6889; box-shadow: 0 0 8px #3d6889; }
+            100% { border-color: #7bc8ff; box-shadow: 0 0 28px #3f9eff; }
         }
-
         .instrument-item .value {
             font-size: 1.3rem;
             font-weight: 700;
             background: #0b1f2c;
-            padding: 2px 14px;
+            padding: 4px 14px;
             border-radius: 60px;
             margin-top: 6px;
+            animation: valuePulse 1.3s infinite alternate;
+        }
+        @keyframes valuePulse {
+            0% { background: #0b1f2c; }
+            100% { background: #1f4a6e; }
         }
 
         .footer-note {
             text-align: center;
-            font-size: 1rem;
             opacity: 0.8;
-            padding: 18px;
+            padding: 16px;
+            transition: all 0.3s;
+        }
+        .footer-note:hover {
+            opacity: 1;
+            letter-spacing: 2.5px;
         }
 
-        @media (max-width: 700px) {
-            .profile-card {
-                flex-direction: column;
-                text-align: center;
-            }
-            .time-header {
-                flex-direction: column;
-                gap: 16px;
-            }
-            .glass {
-                padding: 22px 18px;
-            }
-            .profile-info h1 {
-                font-size: 2.4rem;
-            }
+        @media (max-width: 750px) {
+            .nav-bar { flex-direction: column; border-radius: 40px; }
+            .nav-tab { padding: 10px 18px; }
         }
     </style>
 </head>
 <body>
-
-    <!-- 加载自检界面 -->
+    <!-- 加载自检界面 (真实IP会显示在这里) -->
     <div id="loading-screen">
         <div class="loader-card">
             <div class="spinner">
@@ -381,100 +500,155 @@
         </div>
     </div>
 
-    <!-- 主内容 (初始隐藏) -->
-    <div id="main-content" style="display: none;">
-        <div class="content-wrapper">
-            <!-- 时间头部 -->
-            <div class="time-header glass">
-                <div class="time-display">
-                    <i class="fas fa-globe-asia"></i>
-                    <span id="utc8-time">加载中...</span>
-                </div>
-             <div class="color-tag">
-                    <span class="badge" id="hour-badge">当前色彩 · 时</span>
-                </div>
+    <!-- 主界面 -->
+    <div id="main-content">
+        <!-- 导航栏 -->
+        <div class="nav-bar">
+            <div class="nav-brand">
+                <i class="fas fa-rocket"></i>
+                <span>Wolfzzzzz</span>
             </div>
-            <!-- 个人名片 (邮箱已修正) -->
-            <div class="profile-card glass">
-                <div class="avatar">
-                    <i class="fas fa-user-astronaut"></i>
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="tab1"><i class="fas fa-tachometer-alt"></i> 仪表盘</button>
+                <button class="nav-tab" data-tab="tab2"><i class="fas fa-plane"></i> 飞行档案</button>
+                <button class="nav-tab" data-tab="tab3"><i class="fas fa-toolbox"></i> 装备库</button>
+            </div>
+            <div class="time-indicator">
+                <i class="fas fa-clock"></i>
+                <span id="utc8-time">加载中...</span>
+            </div>
+        </div>
+
+        <!-- 面板1：仪表盘 -->
+        <div id="tab1" class="tab-panel active-panel">
+            <div class="glass">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div class="time-display-large">
+                        <i class="fas fa-globe-asia"></i>
+                        <span id="utc8-date">加载中...</span>
+                    </div>
+                    <span class="badge" id="hour-badge">色彩 · 时</span>
                 </div>
-                <div class="profile-info">
-                    <h1>Wolfzzzzz</h1>
-                    <p class="tagline"><i class="fas fa-headset"></i> 微软模拟飞行爱好者</p>
-                    <div class="contact-links">
-                        <a href="https://github.com/Wolfzzzzz" target="_blank" class="btn-github"><i class="fab fa-github"></i> GitHub</a>
-                        <a href="mailto:zhang429500@icloud.com" class="btn-email"><i class="fas fa-envelope"></i> zhang429500@icloud.com</a>
+                <div style="display: flex; align-items: center; gap: 30px; flex-wrap: wrap; margin-top: 20px;">
+                    <div class="avatar-small">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                    <div>
+                        <h2 style="font-size: 2.5rem; background: linear-gradient(135deg,#fff,#aad0ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Wolfzzzzz</h2>
+                        <p style="font-size: 1.2rem;"><i class="fas fa-headset"></i> 微软模拟飞行爱好者 · 77W/35K</p>
+                    </div>
+                </div>
+                <!-- 最爱机场徽章 -->
+                <div class="favorite-airports">
+                    <span class="airport-badge"><i class="fas fa-map-pin"></i> CYVR 温哥华</span>
+                    <span class="airport-badge"><i class="fas fa-map-pin"></i> CYYZ 多伦多</span>
+                </div>
+                <!-- 快速数据 -->
+                <div style="display: grid; grid-template-columns: repeat(2,1fr); gap: 20px; margin-top: 20px;">
+                    <div class="stat-block">
+                        <i class="fas fa-clock"></i>
+                        <div>总飞行时数</div>
+                        <div class="value">1,426h</div>
+                    </div>
+                    <div class="stat-block">
+                        <i class="fas fa-trophy"></i>
+                        <div>最爱机场</div>
+                        <div class="value">CYVR/CYYZ</div>
                     </div>
                 </div>
             </div>
 
-            <!-- 飞行信息卡片 (仅保留77W/35K) -->
-            <div class="flight-grid">
-                <!-- 左侧：飞行细节 -->
-                <div class="flight-card glass">
-                    <div class="card-header">
-                        <i class="fas fa-plane cockpit-icon"></i>
-                        <h2>我的飞行模拟</h2>
-                    </div>
-                    <ul class="flight-details">
-                        <!-- 只保留最爱机型（77W & 35K），其他机型已移除 -->
-                        <li><i class="fas fa-check-circle"></i> <strong>最爱机型：</strong>波音 777-300ER (77W)  ·  空客 A350-1000 (35K) <span style="opacity:0.7; font-size:0.9rem;"></span></li>
-                        <li><i class="fas fa-check-circle"></i> <strong>平台：</strong>微软飞行模拟 2020</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>硬件：</strong>TCA 侧杆 + 油门</li>
-                        <li><i class="fas fa-check-circle"></i> <strong>风格：</strong>纯盲降</li>
-                    </ul>
+            <!-- 动态仪表 -->
+            <div class="instruments glass">
+                <div class="instrument-item"><i class="fas fa-gauge-high"></i><span>空速</span><span class="value">256</span></div>
+                <div class="instrument-item"><i class="fas fa-compass"></i><span>航向</span><span class="value">350°</span></div>
+                <div class="instrument-item"><i class="fas fa-mountain"></i><span>高度</span><span class="value">FL410</span></div>
+                <div class="instrument-item"><i class="fas fa-temperature-low"></i><span>SAT</span><span class="value">-48°C</span></div>
+            </div>
+
+            <!-- 近期探险 -->
+            <div class="glass">
+                <h3 style="margin-bottom: 16px;"><i class="fas fa-map-marked-alt"></i> 近期探险</h3>
+                <div style="display: flex; gap: 24px; flex-wrap: wrap;">
+                    <p><i class="fas fa-cloud-sun"></i> 77W 环球 <span class="stat-badge" style="background:#0f3752; padding:6px 18px; border-radius:40px;">3次</span></p>
+                    <p><i class="fas fa-mountain"></i> 35K 跨雪山 <span class="stat-badge" style="background:#0f3752; padding:6px 18px; border-radius:40px;">练习中</span></p>
+                    <p><i class="fas fa-moon"></i> 夜航 <span class="stat-badge" style="background:#0f3752; padding:6px 18px; border-radius:40px;">136次</span></p>
                 </div>
-                <!-- 右侧：近期探险 -->
-                <div class="flight-card glass">
-                    <div class="card-header">
-                        <i class="fas fa-map-marked-alt"></i>
-                        <h2>近期探险</h2>
+                <div style="margin-top: 20px; padding: 16px; background: rgba(0,20,40,0.7); border-radius: 40px; border-left: 6px solid #3f9eff;">
+                    <i class="fas fa-quote-right"></i> “飞行不是逃避，而是从更高的维度看世界。”
+                </div>
+            </div>
+        </div>
+
+        <!-- 面板2：飞行档案 -->
+        <div id="tab2" class="tab-panel">
+            <div class="glass">
+                <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 20px;">
+                    <i class="fas fa-plane" style="font-size: 40px; color:#ffbb4a;"></i>
+                    <h2>✈ 我的飞行档案</h2>
+                </div>
+                <ul class="flight-details-list">
+                    <li><i class="fas fa-check-circle"></i> <strong>最爱机型：</strong>波音 777-300ER (77W) · 空客 A350-1000 (35K)</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>最爱机场：</strong>温哥华 (CYVR) / 多伦多 (CYYZ)</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>平台：</strong>微软飞行模拟 2020</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>硬件：</strong>TCA 侧杆 + 油门</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>风格：</strong>纯盲降</li>
+                </ul>
+                <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-top: 25px;">
+                    <span class="stat-badge" style="background:#0f3752; padding:10px 25px;"><i class="far fa-star"></i> 77W 环球3次</span>
+                    <span class="stat-badge" style="background:#0f3752; padding:10px 25px;"><i class="far fa-star"></i> 35K 雪山练习</span>
+                    <span class="stat-badge" style="background:#0f3752; padding:10px 25px;"><i class="far fa-star"></i> 夜航136次</span>
+                </div>
+            </div>
+            <div class="glass" style="text-align: center;">
+                <p style="font-size: 1.6rem;">“纯盲降，温哥华 approach”</p>
+                <p style="opacity:0.7;">—— Wolfzzzzz</p>
+            </div>
+        </div>
+
+        <!-- 面板3：装备库 -->
+        <div id="tab3" class="tab-panel">
+            <div class="glass">
+                <h2><i class="fas fa-toolbox"></i> 我的装备</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr)); gap: 20px; margin-top: 24px;">
+                    <div class="gear-item">
+                        <i class="fas fa-gamepad"></i>
+                        <h3>TCA 侧杆</h3>
+                        <p>空客授权 · 霍尔感应</p>
                     </div>
-                    <div class="flight-stats">
-                        <p><i class="fas fa-cloud-sun"></i> 77W 环绕地球 &nbsp; <span class="stat-badge">完成 3 次</span></p>
-                        <p><i class="fas fa-mountain"></i> 35K 跨雪山 &nbsp; <span class="stat-badge">练习中</span></p>
-                        <p><i class="fas fa-moon"></i> 夜航 &nbsp; <span class="stat-badge">完成136次</span></p>
+                    <div class="gear-item">
+                        <i class="fas fa-sliders"></i>
+                        <h3>TCA 油门</h3>
+                        <p>反推区域 · 可调阻尼</p>
                     </div>
-                    <div class="cockpit-quote">
-                        <i class="fas fa-quote-right"></i> “飞行不是逃避，而是从更高的维度看世界。”
+                    <div class="gear-item">
+                        <i class="fas fa-desktop"></i>
+                        <h3>MSFS 2020</h3>
+                        <p>豪华版 + 世界更新</p>
+                    </div>
+                    <div class="gear-item">
+                        <i class="fas fa-headphones"></i>
+                        <h3>专业头戴</h3>
+                        <p>ATC 清晰沟通</p>
                     </div>
                 </div>
             </div>
-
             <!-- 仪表盘装饰 -->
             <div class="instruments glass">
-                <div class="instrument-item">
-                    <i class="fas fa-gauge-high"></i>
-                    <span>空速</span>
-                    <span class="value">256</span>
-                </div>
-                <div class="instrument-item">
-                    <i class="fas fa-compass"></i>
-                    <span>航向</span>
-                    <span class="value">350°</span>
-                </div>
-                <div class="instrument-item">
-                    <i class="fas fa-mountain"></i>
-                    <span>高度</span>
-                    <span class="value">FL410</span>
-                </div>
-                <div class="instrument-item">
-                    <i class="fas fa-temperature-low"></i>
-                    <span>SAT</span>
-                    <span class="value">-48°C</span>
-                </div>
+                <div class="instrument-item"><i class="fas fa-gauge-high"></i><span>空速</span><span class="value">256</span></div>
+                <div class="instrument-item"><i class="fas fa-compass"></i><span>航向</span><span class="value">350°</span></div>
+                <div class="instrument-item"><i class="fas fa-mountain"></i><span>高度</span><span class="value">FL410</span></div>
+                <div class="instrument-item"><i class="fas fa-temperature-low"></i><span>SAT</span><span class="value">-48°C</span></div>
             </div>
+        </div>
 
-            <!-- 页脚 -->
-            <div class="footer-note glass">
-                <p><i class="far fa-copyright"></i> Wolfzzzzz · 个人主页</p>
-            </div>
+        <!-- 页脚 -->
+        <div class="footer-note glass">
+            <p><i class="far fa-copyright"></i> Wolfzzzzz | 最爱机场: 温哥华/多伦多 </p>
         </div>
     </div>
 
     <script>
-        // ========== script.js (内嵌) ==========
         (function() {
             // 获取元素
             const loadingScreen = document.getElementById('loading-screen');
@@ -488,36 +662,23 @@
 
             const utc8TimeEl = document.getElementById('utc8-time');
             const hourBadge = document.getElementById('hour-badge');
+            const utc8DateEl = document.getElementById('utc8-date');
+
+            // 背景色循环变量
+            let hue = 180; // 初始色相
 
             // 获取东八区小时
             function getUTC8Hour() {
-                const formatter = new Intl.DateTimeFormat('zh-CN', {
-                    timeZone: 'Asia/Shanghai',
-                    hour: 'numeric',
-                    hour12: false
-                });
+                const formatter = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', hour: 'numeric', hour12: false });
                 return parseInt(formatter.format(new Date()), 10);
             }
 
-            // 根据小时改变背景颜色
-            function applyColorByHour() {
+            // 旋转背景色 (每分钟调用)
+            function rotateBackgroundColor() {
+                hue = (hue + 10) % 360;
+                document.body.style.backgroundColor = `hsl(${hue}, 70%, 25%)`;
+                // 更新hour-badge显示当前色相和小时
                 const hour = getUTC8Hour();
-                let saturation = 60;
-                let lightness;
-
-                if (hour >= 7 && hour <= 17) {       // 白天
-                    lightness = 70 + Math.floor((hour - 7) * 1.2); 
-                    if (lightness > 82) lightness = 82;
-                } else if (hour >= 18 || hour <= 5) { // 夜晚
-                    lightness = 25 + (hour === 18 ? 8 : 0);
-                    if (lightness > 40) lightness = 40;
-                } else {                              // 清晨/黄昏
-                    lightness = 45;
-                }
-                
-                const hue = hour * 15;
-                document.body.style.backgroundColor = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
-                
                 if (hourBadge) {
                     hourBadge.innerHTML = `🕒 东八区 ${hour} 时 · 色相 ${hue}°`;
                 }
@@ -527,33 +688,80 @@
             function updateTimeDisplay() {
                 if (!utc8TimeEl) return;
                 const now = new Date();
-                const options = {
-                    timeZone: 'Asia/Shanghai',
-                    year: 'numeric', month: '2-digit', day: '2-digit',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit',
-                    hour12: false
-                };
-                const formatter = new Intl.DateTimeFormat('zh-CN', options);
-                const parts = formatter.formatToParts(now);
-                const dateTimeStr = parts.map(p => p.value).join('');
-                utc8TimeEl.textContent = dateTimeStr;
+                const timeStr = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(now);
+                const dateStr = new Intl.DateTimeFormat('zh-CN', { timeZone: 'Asia/Shanghai', year: 'numeric', month: '2-digit', day: '2-digit' }).format(now);
+                utc8TimeEl.textContent = timeStr;
+                if (utc8DateEl) utc8DateEl.textContent = dateStr + ' ' + timeStr;
             }
 
-            // 启动时间刷新
-            function startTimeUpdater() {
-                updateTimeDisplay();
-                setInterval(updateTimeDisplay, 1000);
+            function startTimeUpdater() { 
+                updateTimeDisplay(); 
+                setInterval(updateTimeDisplay, 1000); 
             }
 
-            // 监控小时变化
-            function startHourWatcher() {
-                applyColorByHour();
-                setInterval(applyColorByHour, 60000);
+            // 启动背景旋转 (每分钟)
+            function startRotatingBackground() {
+                rotateBackgroundColor(); // 立即执行一次
+                setInterval(rotateBackgroundColor, 60000); // 1分钟
             }
 
-            // 自检流程
+            // ===== 真实IP检测 (使用ip-api.com) =====
+            async function fetchRealIP() {
+                try {
+                    const response = await fetch('https://ip-api.com/json/?fields=query,isp,org,country,region,city', { 
+                        mode: 'cors',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    
+                    if (!response.ok) throw new Error('网络响应错误');
+                    
+                    const data = await response.json();
+                    
+                    // 更新IP显示
+                    if (checkIP) {
+                        checkIP.textContent = data.query || '未知IP';
+                    }
+                    
+                    // 更新网络信息
+                    if (checkNetwork) {
+                        let networkStr = '未知网络';
+                        if (data.isp && data.isp !== 'Not available' && data.isp !== '') {
+                            networkStr = data.isp;
+                            if (data.city && data.country) {
+                                networkStr += ` (${data.city}, ${data.country})`;
+                            }
+                        } else {
+                            networkStr = '无法获取ISP信息';
+                        }
+                        checkNetwork.textContent = networkStr;
+                    }
+                    
+                    return data;
+                } catch (error) {
+                    console.error('IP获取失败:', error);
+                    
+                    // 降级处理：使用备用API
+                    try {
+                        const backupResponse = await fetch('https://api.ipify.org?format=json', { mode: 'cors' });
+                        if (backupResponse.ok) {
+                            const backupData = await backupResponse.json();
+                            if (checkIP) checkIP.textContent = backupData.ip || '无法获取';
+                        } else {
+                            if (checkIP) checkIP.textContent = '获取失败';
+                        }
+                    } catch (backupError) {
+                        if (checkIP) checkIP.textContent = '获取失败';
+                    }
+                    
+                    if (checkNetwork) checkNetwork.textContent = '网络信息暂不可用';
+                    
+                    return null;
+                }
+            }
+
+            // 自检流程 (修改为使用真实IP)
             async function runSelfChecks() {
-                // 重置
+                // 重置所有检测项
                 if (checkIP) checkIP.textContent = '检测中...';
                 if (checkNetwork) checkNetwork.textContent = '检测中...';
                 if (checkSecurity) checkSecurity.textContent = '检测中...';
@@ -565,29 +773,15 @@
                     if (progressBar) progressBar.style.width = progress + '%';
                 };
 
+                // 并行执行：IP检测 + 安全检测 + 浏览器检测 + 最小显示时间
                 const minDisplay = new Promise(resolve => setTimeout(resolve, 1800));
 
-                // IP检测
-                const ipPromise = fetch('https://ip-api.com/json/?fields=query,isp,org,country,region,city', { mode: 'cors' })
-                    .then(res => res.ok ? res.json() : Promise.reject())
-                    .then(data => {
-                        const ip = data.query || '未知IP';
-                        if (checkIP) checkIP.textContent = ip;
-                        let networkStr = '未知网络';
-                        if (data.isp && data.isp !== 'Not available') {
-                            networkStr = data.isp;
-                            if (data.city && data.country) networkStr += ` (${data.city}, ${data.country})`;
-                        } else {
-                            networkStr = '微软模拟飞行宽带(模拟)';
-                        }
-                        if (checkNetwork) checkNetwork.textContent = networkStr;
-                        updateProgress(35);
-                    })
-                    .catch(() => {
-                        if (checkIP) checkIP.textContent = '8.8.8.8 (模拟)';
-                        if (checkNetwork) checkNetwork.textContent = 'Microsoft Flight Simulator ISP (离线模式)';
-                        updateProgress(30);
-                    });
+                // 真实IP检测
+                const ipPromise = fetchRealIP().then(() => {
+                    updateProgress(40); // IP检测完成给40%进度
+                }).catch(() => {
+                    updateProgress(30); // 即使失败也给部分进度
+                });
 
                 // 安全检测
                 const securityPromise = Promise.resolve().then(() => {
@@ -601,34 +795,64 @@
                     const ua = navigator.userAgent;
                     const isModern = /Chrome|Firefox|Safari|Edg/i.test(ua) && !/MSIE|Trident/.test(ua);
                     if (checkBrowser) checkBrowser.textContent = isModern ? '良好 (现代浏览器)' : '基础兼容模式';
-                    updateProgress(10);
+                    updateProgress(15);
                 });
 
+                // 等待所有检测完成
                 await Promise.allSettled([ipPromise, securityPromise, browserPromise, minDisplay]);
 
-                // 后备填充
-                if (checkIP && checkIP.textContent === '检测中...') checkIP.textContent = '127.0.0.1 (本地回环)';
-                if (checkNetwork && checkNetwork.textContent === '检测中...') checkNetwork.textContent = '模拟飞行网络 (自检)';
-                if (checkSecurity && checkSecurity.textContent === '检测中...') checkSecurity.textContent = '加密连接 (推断)';
-                if (checkBrowser && checkBrowser.textContent === '检测中...') checkBrowser.textContent = '安全等级 A';
-
+                // 最终进度100%
                 if (progressBar) progressBar.style.width = '100%';
 
+                // 额外等待400ms让用户看到100%
                 await new Promise(r => setTimeout(r, 400));
 
+                // 隐藏加载界面，显示主内容
                 loadingScreen.style.opacity = '0';
                 loadingScreen.style.visibility = 'hidden';
                 mainContent.style.display = 'block';
+                
                 setTimeout(() => {
                     loadingScreen.style.display = 'none';
                 }, 600);
             }
 
-            // 启动
+            // 标签页切换
+            function setupTabs() {
+                const tabs = document.querySelectorAll('.nav-tab');
+                const panels = {
+                    tab1: document.getElementById('tab1'),
+                    tab2: document.getElementById('tab2'),
+                    tab3: document.getElementById('tab3')
+                };
+                
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        tabs.forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        Object.values(panels).forEach(p => p.classList.remove('active-panel'));
+                        
+                        const targetId = tab.getAttribute('data-tab');
+                        if (panels[targetId]) {
+                            panels[targetId].classList.add('active-panel');
+                        }
+                    });
+                });
+            }
+
+            // 初始化
             window.addEventListener('DOMContentLoaded', () => {
-                applyColorByHour();
+                // 设置初始背景色
+                document.body.style.backgroundColor = `hsl(${hue}, 70%, 25%)`;
+                
+                // 启动时间更新
                 startTimeUpdater();
-                startHourWatcher();
+                
+                // 启动背景旋转 (每分钟变色)
+                startRotatingBackground();
+                
+                // 运行自检 (会显示真实IP)
                 runSelfChecks().catch(err => {
                     console.error('自检异常', err);
                     loadingScreen.style.opacity = '0';
@@ -636,6 +860,9 @@
                     mainContent.style.display = 'block';
                     setTimeout(() => { loadingScreen.style.display = 'none'; }, 500);
                 });
+                
+                // 设置标签页
+                setupTabs();
             });
         })();
     </script>
